@@ -46,5 +46,26 @@
     5. The new State column have some value with ‘US’ appended on state code, therefore the ‘US’ is truncated from the data (LAUS=> LA)
      
      
+ Creates View for Z-Score:
+(View: process_zscore)
+
+CREATE VIEW transaction_info.process_zscore as
+               SELECT tr.account_number, tr.merchant, tr.transaction_number, tr.transaction_amount,                
+                             AVG(tr.transaction_amount) as avg_transaction, STD(tr.transaction_amount) as 
+                             stdev_transaction,  if (STD(tr.transaction_amount)<>0, (transaction_amount – 
+                             AVG(tr.transaction_amount))/ STD(tr.transaction_amount), 0) as z_score
+                                  FROM transaction tr GROUP BY tr.merchant, tr.account_number;
+                                  
+                                  
+                                  
+Create z-score with account information:
+(View: process_zscore_account)
+use transaction_info;
+CREATE VIEW transaction_info.process_zscore_account as
+	SELECT CONCAT(CONCAT(acc.first_name, " "), acc.last_name) as  customer_name, 
+                            zs.transaction_number,  acc.account_number, zs.merchant, zs.transaction_amount,                    
+                            zs.z_score
+	             FROM account_info acc inner join process_zscore zs on 
+			acc.account_number =   zs.account_number
 
  
