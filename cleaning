@@ -1,0 +1,7 @@
+On Transaction Table:
+    1. The transaction_datetime changed to Date and time format (12182020 15:29:12 => 12/18/2020 15:29:12)
+    2. Transaction amount has ‘– ‘after every value, so it is tanicated (1.06- => 1.06)
+    3. Post_date colum some values are lessthan 8 digits, so for values with less than 8 value length, ‘0’ is added at the front and the value changed to date format (2202021 => 02202021 =>02/20/2021)
+    4. The Merchant_description column contains multiple information such as: description, city and state. Since the state is required for the analysis, the state is split from the column and new column created with the value.  (MAVERIK #488           DRAPER       LAUS => LAUS) , (MACEY'S LEHI           LEHI          LA => LA)
+    5. The new State column have some value with ‘US’ appended on state code, therefore the ‘US’ is truncated from the data (LAUS=> LA)
+Account_Information table doesnot need cleaning.
